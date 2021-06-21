@@ -43,7 +43,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion "android-S"
     buildToolsVersion '30.0.3'
     ndkVersion "21.1.6352462"
 
