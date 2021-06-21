@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TMessages.AppWidget.Background"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@drawable/widget_bg"
     android:orientation="vertical"
-    android:padding="2dp">
+    android:theme="@style/Theme.TMessages.AppWidget">
 
     <LinearLayout
         android:layout_width="match_parent"

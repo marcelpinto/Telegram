@@ -132,7 +132,11 @@
 
     <!--APP WIDGET-->
 
-    <style name="Theme.TMessages.AppWidget">
+    <style name="Base.Theme.TMessages.AppWidget" parent="Theme.TMessages"/>
+
+    <style name="Theme.TMessages.AppWidget" parent="Base.Theme.TMessages.AppWidget">
+        <item name="widgetBackgroundCornerRadius">@dimen/app_widget_background_corner_radius</item>
+
         <item name="widgetPreviewTitle" />
         <item name="widgetPreviewContent" />
         <item name="widgetPreviewTime" />
@@ -162,6 +166,34 @@
         <item name="widgetPreviewTime">11:00</item>
         <item name="widgetPreviewDot">2</item>
         <item name="widgetPreviewImage">@drawable/logo_avatar</item>
+    </style>
+
+    <!-- APP WIDGET STYLES-->
+
+    <style name="Base.TMessages.AppWidget.Background" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="TMessages.AppWidget.Background" parent="Base.TMessages.AppWidget.Background">
+        <item name="android:background">@drawable/widget_bg</item>
+    </style>
+
+    <style name="Base.TMessages.AppWidget.Badge" parent="android:Widget">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">23dp</item>
+        <item name="android:paddingLeft">7dp</item>
+        <item name="android:paddingRight">7dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">23dp</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:background">@drawable/widget_badge_background</item>
+    </style>
+
+    <style name="TMessages.AppWidget.Badge" parent="Base.TMessages.AppWidget.Badge">
+        <item name="android:textColor">@color/widget_badge</item>
     </style>
 
 </resources>
