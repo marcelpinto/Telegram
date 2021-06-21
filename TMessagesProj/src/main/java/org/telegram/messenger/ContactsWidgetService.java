@@ -43,18 +43,16 @@ class ContactsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
     private Paint roundPaint;
     private RectF bitmapRect;
     private LongSparseArray<TLRPC.Dialog> dialogs = new LongSparseArray<>();
-    private boolean deleted;
 
     public ContactsRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
         Theme.createDialogsResources(context);
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         SharedPreferences preferences = context.getSharedPreferences("shortcut_widget", Activity.MODE_PRIVATE);
-        int accountId = preferences.getInt("account" + appWidgetId, -1);
+        int accountId = preferences.getInt("account" + appWidgetId, UserConfig.selectedAccount);
         if (accountId >= 0) {
             accountInstance = AccountInstance.getInstance(accountId);
         }
-        deleted = preferences.getBoolean("deleted" + appWidgetId, false) || accountInstance == null;
     }
 
     public void onCreate() {
@@ -66,7 +64,7 @@ class ContactsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
     }
 
     public int getCount() {
-        if (deleted) {
+        if (accountInstance == null) {
             return 1;
         }
         int count = (int) Math.ceil(dids.size() / 2.0f);
@@ -74,7 +72,7 @@ class ContactsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactor
     }
 
     public RemoteViews getViewAt(int position) {
-        if (deleted) {
+        if (accountInstance == null) {
             RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_deleted);
             rv.setTextViewText(R.id.widget_deleted_text, LocaleController.getString("WidgetLoggedOff", R.string.WidgetLoggedOff));
             return rv;

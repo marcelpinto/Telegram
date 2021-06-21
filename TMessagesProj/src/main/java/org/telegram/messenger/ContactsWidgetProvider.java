@@ -28,7 +28,7 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
-            updateWidget(context, appWidgetManager, appWidgetId, false);
+            updateWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
@@ -46,14 +46,13 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
             }
             editor.remove("account" + appWidgetIds[a]);
             editor.remove("type" + appWidgetIds[a]);
-            editor.remove("deleted" + appWidgetIds[a]);
         }
         editor.commit();
     }
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        updateWidget(context, appWidgetManager, appWidgetId, true);
+        updateWidget(context, appWidgetManager, appWidgetId);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
     }
 
@@ -65,7 +64,7 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
         return n - 1;
     }
 
-    public static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean edit) {
+    public static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         ApplicationLoader.postInitApplication();
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         int maxHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
@@ -76,27 +75,23 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
         intent2.setData(Uri.parse(intent2.toUri(Intent.URI_INTENT_SCHEME)));
 
         SharedPreferences preferences = context.getSharedPreferences("shortcut_widget", Activity.MODE_PRIVATE);
-        boolean deleted = preferences.getBoolean("deleted" + appWidgetId, false);
         int id;
-        if (!deleted) {
-            int accountId = preferences.getInt("account" + appWidgetId, -1);
-            ArrayList<Long> selectedDialogs = new ArrayList<>();
-            if (accountId >= 0) {
-                AccountInstance.getInstance(accountId).getMessagesStorage().getWidgetDialogIds(appWidgetId, EditWidgetActivity.TYPE_CONTACTS, selectedDialogs, null, null, false);
-            }
-            int count = (int) Math.ceil(selectedDialogs.size() / 2.0f);
+        int accountId = preferences.getInt("account" + appWidgetId, UserConfig.selectedAccount);
 
-            if (rows == 1 || count <= 1) {
-                id = R.layout.contacts_widget_layout_1;
-            } else if (rows == 2 || count <= 2) {
-                id = R.layout.contacts_widget_layout_2;
-            } else if (rows == 3 || count <= 3) {
-                id = R.layout.contacts_widget_layout_3;
-            } else {
-                id = R.layout.contacts_widget_layout_4;
-            }
-        } else {
+        ArrayList<Long> selectedDialogs = new ArrayList<>();
+        if (accountId >= 0) {
+            AccountInstance.getInstance(accountId).getMessagesStorage().getWidgetDialogIds(appWidgetId, EditWidgetActivity.TYPE_CONTACTS, selectedDialogs, null, null, false);
+        }
+        int count = (int) Math.ceil(selectedDialogs.size() / 2.0f);
+
+        if (rows == 1 || count <= 1) {
             id = R.layout.contacts_widget_layout_1;
+        } else if (rows == 2 || count <= 2) {
+            id = R.layout.contacts_widget_layout_2;
+        } else if (rows == 3 || count <= 3) {
+            id = R.layout.contacts_widget_layout_3;
+        } else {
+            id = R.layout.contacts_widget_layout_4;
         }
         RemoteViews rv = new RemoteViews(context.getPackageName(), id);
         rv.setRemoteAdapter(appWidgetId, R.id.list_view, intent2);
@@ -111,8 +106,6 @@ public class ContactsWidgetProvider extends AppWidgetProvider {
         rv.setPendingIntentTemplate(R.id.list_view, contentIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, rv);
-        if (edit) {
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
-        }
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view);
     }
 }

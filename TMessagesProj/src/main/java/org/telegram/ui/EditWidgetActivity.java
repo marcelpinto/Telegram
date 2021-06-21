@@ -27,12 +27,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
@@ -46,6 +40,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ChatObject;
@@ -56,10 +55,8 @@ import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.MessageObject;
-import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.SharedConfig;
-import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.ActionBar;
@@ -105,7 +102,6 @@ public class EditWidgetActivity extends BaseFragment {
 
     private int widgetType;
     private int currentWidgetId;
-    private boolean isEdit;
 
     private EditWidgetActivityDelegate delegate;
 
@@ -234,7 +230,7 @@ public class EditWidgetActivity extends BaseFragment {
 
             shadowDrawable = Theme.getThemedDrawable(context, R.drawable.greydivider_bottom, Theme.key_windowBackgroundGrayShadow);
         }
-        
+
         public void updateDialogs() {
             if (widgetType == TYPE_CHATS) {
                 for (int a = 0; a < 2; a++) {
@@ -734,18 +730,15 @@ public class EditWidgetActivity extends BaseFragment {
         }
     }
 
-    public EditWidgetActivity(int type, int widgetId, boolean edit) {
+    public EditWidgetActivity(int type, int widgetId) {
         super();
         widgetType = type;
         currentWidgetId = widgetId;
-        isEdit = edit;
-        if (edit) {
-            ArrayList<TLRPC.User> users = new ArrayList<>();
-            ArrayList<TLRPC.Chat> chats = new ArrayList<>();
-            getMessagesStorage().getWidgetDialogIds(currentWidgetId, widgetType, selectedDialogs, users, chats, true);
-            getMessagesController().putUsers(users, true);
-            getMessagesController().putChats(chats, true);
-        }
+        ArrayList<TLRPC.User> users = new ArrayList<>();
+        ArrayList<TLRPC.Chat> chats = new ArrayList<>();
+        getMessagesStorage().getWidgetDialogIds(currentWidgetId, widgetType, selectedDialogs, users, chats, true);
+        getMessagesController().putUsers(users, true);
+        getMessagesController().putChats(chats, true);
         updateRows();
     }
 
@@ -816,9 +809,9 @@ public class EditWidgetActivity extends BaseFragment {
 
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getParentActivity());
                     if (widgetType == TYPE_CHATS) {
-                        ChatsWidgetProvider.updateWidget(getParentActivity(), appWidgetManager, currentWidgetId, isEdit);
+                        ChatsWidgetProvider.updateWidget(getParentActivity(), appWidgetManager, currentWidgetId);
                     } else {
-                        ContactsWidgetProvider.updateWidget(getParentActivity(), appWidgetManager, currentWidgetId, isEdit);
+                        ContactsWidgetProvider.updateWidget(getParentActivity(), appWidgetManager, currentWidgetId);
                     }
                     if (delegate != null) {
                         delegate.didSelectDialogs(selectedDialogs);
