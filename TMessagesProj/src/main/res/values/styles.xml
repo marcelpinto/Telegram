@@ -130,4 +130,38 @@
         <item name="android:windowFullscreen">false</item>
     </style>
 
+    <!--APP WIDGET-->
+
+    <style name="Theme.TMessages.AppWidget">
+        <item name="widgetPreviewTitle" />
+        <item name="widgetPreviewContent" />
+        <item name="widgetPreviewTime" />
+        <item name="widgetPreviewDot">0</item>
+        <item name="widgetPreviewImage">@null</item>
+    </style>
+
+    <style name="Theme.TMessages.AppWidget.Preview">
+        <item name="widgetPreviewTitle">Local Weather</item>
+        <item name="widgetPreviewContent">&#9728; 30°C Sunny,</item>
+        <item name="widgetPreviewTime">13:00</item>
+        <item name="widgetPreviewDot">0</item>
+        <item name="widgetPreviewImage">@drawable/logo_avatar</item>
+    </style>
+
+    <style name="Theme.TMessages.AppWidget.Preview2">
+        <item name="widgetPreviewTitle">Rex</item>
+        <item name="widgetPreviewContent">It\'s morning in Tokyo &#128526;</item>
+        <item name="widgetPreviewTime">12:00</item>
+        <item name="widgetPreviewDot">2</item>
+        <item name="widgetPreviewImage">@drawable/logo_avatar</item>
+    </style>
+
+    <style name="Theme.TMessages.AppWidget.Preview3">
+        <item name="widgetPreviewTitle">Dolph Ingman</item>
+        <item name="widgetPreviewContent">&#128517; Sticker</item>
+        <item name="widgetPreviewTime">11:00</item>
+        <item name="widgetPreviewDot">2</item>
+        <item name="widgetPreviewImage">@drawable/logo_avatar</item>
+    </style>
+
 </resources>
