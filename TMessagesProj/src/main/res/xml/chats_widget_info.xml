@@ -12,6 +12,7 @@
     android:autoAdvanceViewId="@id/list_view"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
+    android:description="@string/EditWidgetChatsInfo"
     android:previewImage="@drawable/chats_widget_preview"
     android:configure="org.telegram.ui.ChatsWidgetConfigActivity">
 </appwidget-provider>
